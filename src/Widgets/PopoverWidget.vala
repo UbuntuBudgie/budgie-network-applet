@@ -27,16 +27,7 @@ public class Network.Widgets.PopoverWidget : Network.Widgets.NMVisualizer {
 
     construct {
         show_settings_button.clicked.connect (show_settings);
-
-        hidden_item.clicked.connect (() => {
-            bool found = false;
-            wifi_box.get_children ().foreach ((child) => {
-                if (child is Network.WifiInterface && ((Network.WifiInterface) child).hidden_sensitivity && !found) {
-                    ((Network.WifiInterface) child).connect_to_hidden ();
-                    found = true;
-                }
-            });
-        });
+        hidden_item.clicked.connect(show_hidden_network_settings);
     }
 
     protected override void build_ui () {
@@ -134,5 +125,23 @@ public class Network.Widgets.PopoverWidget : Network.Widgets.NMVisualizer {
         }
 
         settings_shown ();
+    }
+
+    void show_hidden_network_settings() {
+        string control_center = "gnome-control-center";
+        if (Environment.find_program_in_path("budgie-control-center") != null) {
+            control_center = "budgie-control-center";
+        }
+        string commandline = string.join(" ", control_center, "wifi", "connect-hidden-wifi");
+
+        try {
+            var appinfo = AppInfo.create_from_commandline(commandline, null,
+                                                              AppInfoCreateFlags.NONE);
+            appinfo.launch(null, null);
+        } catch (Error e) {
+            message("Unable to launch %s: %s", control_center, e.message);
+        }
+
+        settings_shown();
     }
 }
