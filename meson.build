@@ -8,14 +8,10 @@ i18n=import('i18n')
 
 add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()), language: 'c')
 
-#add_project_arguments(
-#    '--vapidir', join_paths(meson.current_source_dir(), 'vapi'),
-#    language: 'vala'
-#)
 VAPI_DIR = join_paths(meson.source_root(),
                       'vapi')
 
-
+budgie_dep=dependency('budgie-1.0', version: '>=2')
 i18n=import('i18n')
 intltool = find_program('intltool-merge')
 podir = join_paths(meson.source_root(), 'po')

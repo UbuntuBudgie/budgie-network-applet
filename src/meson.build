@@ -46,7 +46,7 @@ network_applet_sources = [
 
 network_applet_deps = [
             dependency('gtk+-3.0', version: '>=3.18'),
-            dependency('budgie-1.0', version: '>=2'),
+            budgie_dep,
             dependency('libnm'),
             dependency('libnma'),
             meson.get_compiler('vala').find_library('posix'),
